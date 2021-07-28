@@ -1,0 +1,86 @@
+This list consist of used commands: 
+cfdisk /dev/sdb
+mkfs.ext4 /dev/sdb1
+mkfs.ext4 /dev/sdb2
+mkdir /mnt/newvar
+mkdir /mnt/newhome
+mount /dev/sdb1 /mnt/newvar
+mount /dev/sdb2 /mnt/newhome
+cd /var/log
+cp -ax * /mnt/newvar
+cd /home 
+cp -ax * /mnt/newhome
+cd /var
+mv log log.old
+mkdir log
+umount /dev/sdb1
+mount /dev/sdb1 log
+cd /mnt/newvar
+cp -ax * /var/log
+nano /etc/fstab 
+cd /
+mv home home.old
+mkdir home
+umount /dev/sdb2
+mount /dev/sdb2 home
+cd /mnt/newhome
+cp -ax * /home
+nano /etc/fstab 
+
+useradd -m bob
+passwd bob
+groupadd tech_group
+cat /etc/group
+usermod -aG tech_group bob
+cat /etc/group
+
+yum -y install openssh-server openssh-clients
+nano /etc/ssh/sshd_config
+
+nano /etc/sudoers
+
+useradd -m smith
+passwd smith
+usermod -aG tech_group smith
+cat /etc/group
+// install PuTTYx32 | Also change Network Adapter 2 to Host-only Adapter, than activate enp0s8 in wired settings
+ifconfig 
+
+// in Windows PowerShell
+ssh-keygen
+ssh smith@192.168.56.101
+cd /home/smith
+mkdir .ssh
+chmod 700 .ssh
+cd .ssh
+echo ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCBVxpkV+ttX5/Ftf11YspAQvozu9vCmWrZ3emHLMSKkKArS3ZuU5OfbC3AjlYzt+Etf6HMMB5SAYPTYqNQ6hSqQNJhmbLAvTR1sw7dADpTlf8+k3U8RHZHNOrYNomWUMdGtxl7L5syVK2sVBDtu22j9vEM3oupELtS3NKfajKEGRFt5NgG5fvWrJqJQz6LpMJke/WCEjPYH2bZ19QXb5eccXWtGb91KzaUc4CLW3DH1UpXdlzY7t7tP1UL1UVu7ZsIGyyGadMCY/h8TEVpV/OoJt2KQSqh8eBZlcn3Pp2NABH3JhGs8PmdCd6TurfDoA4TJeLV0SZAMcoZ4OhJ2OTf rsa-key-20210722 >> authorized_keys
+chmod 600 .ssh/authorized_keys
+chown smith:smith .ssh -R
+
+
+// in PuTTYx32 Connection -> SSH -> Auth browse private key and connect 192.168.56.101
+
+nano /etc/ssh/sshd_config
+
+dnf install samba samba-common samba-client
+// Check windows and linux workgroup compatibility 
+mkdir -p /srv/samba/shared
+sudo chmod -R 0755 /srv/samba/shared
+sudo chown -R nobody:nobody /srv/samba/shared
+sudo chcon -t samba_share_t /srv/samba/shared
+nano /etc/samba/smb.conf
+testparm
+firewall-cmd --add-service=samba --zone=public --permanent
+firewall-cmd --reload
+systemctl start smb
+systemctl enable smb
+systemctl start nmb
+systemctl enable nmb
+// Create link \\192.168.56.101 | shared_folder located in /srv/samba/shared
+
+
+
+
+
+
+
