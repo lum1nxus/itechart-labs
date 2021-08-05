@@ -19,8 +19,8 @@ sudo systemctl enable jenkins
 sudo systemctl start jenkins
 sudo cat >> /etc/hosts <<EOF
 #jenkins servers - forced since no DNS
-172.16.1.50     Master_Server
-172.16.1.51     Slave_Server
+172.16.1.50     MasterServer
+172.16.1.51     SlaveServer
 EOF
 
 
