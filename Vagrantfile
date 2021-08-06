@@ -9,7 +9,7 @@ Vagrant.configure("2") do |config|
 		  :script => "master.sh"
         },
 		{
-          :hostname => "SlaveServer1",
+          :hostname => "SlaveServer",
           :box => "centos/7",
           :ip => "172.16.1.51",
 		  :guestport => "8080",
@@ -17,12 +17,12 @@ Vagrant.configure("2") do |config|
 		  :script => "slave.sh"
         },
 		{
-          :hostname => "SlaveServer2",
+          :hostname => "DeployServer",
           :box => "centos/7",
           :ip => "172.16.1.52",
 		  :guestport => "8080",
 		  :hostport => "1235",
-		  :script => "slave.sh"
+		  :script => "deploy.sh"
         }
       ]
 

@@ -2,7 +2,7 @@
 echo "Updating package lists"
 sudo yum update -y
 echo "Installing wget package"
-sudo yum -y install wget
+sudo yum -y install wget git
 echo "Installing repository link to the specified folder"
 sudo wget -O /etc/yum.repos.d/jenkins.repo \
     https://pkg.jenkins.io/redhat-stable/jenkins.repo
