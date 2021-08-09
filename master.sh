@@ -22,6 +22,20 @@ sudo cat >> /etc/hosts <<EOF
 172.16.1.50     MasterServer
 172.16.1.51     SlaveServer
 EOF
+sudo yum -y install yum-utils
+sudo yum-config-manager \
+    --add-repo \
+    https://download.docker.com/linux/centos/docker-ce.repo
+sudo yum -y install docker-ce docker-ce-cli containerd.io
+sudo systemctl start docker
+sudo systemctl status docker
+sudo mkdir /opt/jfrog
+JFROG_HOME=/opt/jfrog
+sudo mkdir -p $JFROG_HOME/artifactory/var/etc/
+cd $JFROG_HOME/artifactory/var/etc/
+sudo touch ./system.yaml
+sudo chown -R 1000:100 $JFROG_HOME/artifactory/var
+sudo chmod -R 777 $JFROG_HOME/artifactory/var
 
 
 
