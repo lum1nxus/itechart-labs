@@ -14,7 +14,7 @@
 5. Open static port:50000 for inbound agents in configure tools.
 6. Add jenkins user public key from MasterServer to Github.
 7. Add jenkins user private key from MasterServer to credentials, type username that used on Github.
-## 3. Freestyle Job
+### 3. Freestyle Job
 1. Add project url of Github project.
 2. Activate deletion of past builds.
 3. Activate Git and add repository url (SSH preferably), add Github credentials.
@@ -23,7 +23,7 @@
    * Source files are '**/*'
    * Remote directory is /home... if you dont have rights, `chmod -R 777 /home...`
    * Exec commands are cd /home/cosmic `sudo npm install sudo npm install express hogan-express http-errors debug morgan jade cookie-parser cosmicjs sudo yarn start`
-## 4. Pipeline
+### 4. Pipeline
 1. Add project url of Github project.
 2. Activate deletion of past builds.
 3. Add pipeline script from Jenkinsfile.
