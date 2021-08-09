@@ -1,0 +1,13 @@
+[Unit]
+Description=Connect Slave and Master nodes
+After=network.target
+
+[Service]
+ExecStart=/bin/bash /vagrant/autoconnect.sh
+Restart=on-failure
+WorkingDirectory=/home
+User=root
+Group=root
+
+[Install]
+WantedBy=multi-user.target
