@@ -17,6 +17,8 @@ sudo systemctl daemon-reload
 echo "Starting Jenkins"
 sudo systemctl enable jenkins
 sudo systemctl start jenkins
+echo "Disabling the setup wizard from the Jenkins initialization"
+sudo sed -i 's/JENKINS_ARGS=""/JENKINS_ARGS="-Djenkins.install.runSetupWizard=false"/' /etc/sysconfig/jenkins
 sudo cat >> /etc/hosts <<EOF
 #jenkins servers - forced since no DNS
 172.16.1.50     MasterServer
