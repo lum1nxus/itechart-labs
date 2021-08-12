@@ -19,7 +19,10 @@ sudo sed -i 's/JENKINS_ARGS=""/JENKINS_ARGS="-Djenkins.install.runSetupWizard=fa
 echo "Copying groove scripts to init.groovy.d folder"
 JENKINS_HOME=/var/lib/jenkins
 sudo mkdir -p $JENKINS_HOME/init.groovy.d
-sudo cp /vagrant/scripts/createUser.groovy $JENKINS_HOME/init.groovy.d
+for file in /vagrant/scripts/*
+    do
+        sudo cp $file $JENKINS_HOME/init.groovy.d
+done
 echo "Starting Jenkins"
 sudo systemctl enable jenkins
 sudo systemctl start jenkins
