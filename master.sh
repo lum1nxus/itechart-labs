@@ -14,6 +14,12 @@ echo "Installing Jenkins / OpenJDK"
 sudo yum -y install jenkins java-11-openjdk-devel
 echo "Reloading module files"
 sudo systemctl daemon-reload
+echo "Disabling the setup wizard from the Jenkins initialization"
+sudo sed -i 's/JENKINS_ARGS=""/JENKINS_ARGS="-Djenkins.install.runSetupWizard=false"/' /etc/sysconfig/jenkins
+echo "Copying groove scripts to init.groovy.d folder"
+JENKINS_HOME=/var/lib/jenkins
+sudo mkdir -p $JENKINS_HOME/init.groovy.d
+sudo cp /vagrant/scripts/createUser.groovy $JENKINS_HOME/init.groovy.d
 echo "Starting Jenkins"
 sudo systemctl enable jenkins
 sudo systemctl start jenkins
