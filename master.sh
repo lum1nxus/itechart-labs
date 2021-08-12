@@ -23,6 +23,15 @@ for file in /vagrant/scripts/*
     do
         sudo cp $file $JENKINS_HOME/init.groovy.d
 done
+email=prodluminxus@gmail.com
+githubuser=luminxus
+githubpass=13169909Slava
+if [ ! -f ~/.ssh/id_rsa ]; then
+ssh-keygen -t rsa -b 4096 -C "$email"
+ssh-add ~/.ssh/id_rsa
+fi
+pub=`cat ~/.ssh/id_rsa.pub`
+curl -u "$githubuser:$githubpass" -X POST -d "{\"title\":\"`hostname`\",\"key\":\"$pub\"}" https://api.github.com/user/keys
 echo "Starting Jenkins"
 sudo systemctl enable jenkins
 sudo systemctl start jenkins
