@@ -22,25 +22,37 @@ sudo cat >> /etc/hosts <<EOF
 172.16.1.50     MasterServer
 172.16.1.51     SlaveServer
 EOF
+echo "Installing yum-utils"
 sudo yum -y install yum-utils
+echo "Adding docker repository"
 sudo yum-config-manager \
     --add-repo \
     https://download.docker.com/linux/centos/docker-ce.repo
 sudo yum -y install docker-ce docker-ce-cli containerd.io
+echo "Enabling and starting docker"
 sudo systemctl start docker
+sudo systemctl enable docker
 sudo systemctl status docker
+echo "Creating specified directories for artifactory"
 sudo mkdir /opt/jfrog
-JFROG_HOME=/opt/jfrog
-sudo mkdir -p $JFROG_HOME/artifactory/var/etc/
+export JFROG_HOME=/opt/jfrog
+sudo mkdir -p $JFROG_HOME/artifactory/var/etc/ 
+sudo mkdir -p /var/opt/jfrog/artifactory/
+echo "Creating yaml file"
 cd $JFROG_HOME/artifactory/var/etc/
 sudo touch ./system.yaml
-sudo chown -R 1030:1030 $JFROG_HOME/artifactory/var
-sudo chmod -R 777 $JFROG_HOME/artifactory/var
 sudo bash -c 'cat << EOF > /opt/jfrog/artifactory/var/etc/system.yaml
 shared:
     node:
         ip: 172.16.1.50
 EOF'
-sudo docker run --name artifactory -v $JFROG_HOME/artifactory/var/:/opt/jfrog/artifactory -d -p 8081:8081 -p 8082:8082 releases-docker.jfrog.io/jfrog/artifactory-pro:latest
+echo "Changing owner to 1030(artifactory user id)"
+sudo chown -R 1030:1030 $JFROG_HOME/artifactory/var
+sudo chown -R 1030:1030 /var/opt/jfrog/artifactory/
+echo "Changing access permissions to 777"
+sudo chmod -R 777 $JFROG_HOME/artifactory/var
+echo "Starting docker artifactory container"
+sudo docker run --name artifactory -v $JFROG_HOME/artifactory/var/:/var/opt/jfrog/artifactory -d -p 8081:8081 -p 8082:8082 releases-docker.jfrog.io/jfrog/artifactory-pro:latest
+
 
 
