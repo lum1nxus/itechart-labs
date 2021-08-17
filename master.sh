@@ -51,8 +51,20 @@ sudo chown -R 1030:1030 $JFROG_HOME/artifactory/var
 sudo chown -R 1030:1030 /var/opt/jfrog/artifactory/
 echo "Changing access permissions to 777"
 sudo chmod -R 777 $JFROG_HOME/artifactory/var
+echo "Creating admin user credits"
+sudo mkdir -p $JFROG_HOME/artifactory/var/etc/access
+sudo bash -c 'cat << EOF > /opt/jfrog/artifactory/var/etc/access/bootstrap.creds
+luminxus@*=08052212
+EOF'
+echo "Giving a file revelant permissions"
+sudo chmod 600 /opt/jfrog/artifactory/var/etc/access/bootstrap.creds
+sudo chown -R 1030:1030 $JFROG_HOME/artifactory/var/etc/access
 echo "Starting docker artifactory container"
 sudo docker run --name artifactory -v $JFROG_HOME/artifactory/var/:/var/opt/jfrog/artifactory -d -p 8081:8081 -p 8082:8082 releases-docker.jfrog.io/jfrog/artifactory-pro:latest
-
+echo  "Installing nodejs & npm"
+curl -sL https://rpm.nodesource.com/setup_10.x | sudo bash -
+sudo yum -y install nodejs
+var1=$(npm -version)
+echo "npm version is $var1"
 
 
