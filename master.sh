@@ -11,7 +11,7 @@ sudo rpm --import https://pkg.jenkins.io/redhat-stable/jenkins.io.key
 echo "Upgrading package list"
 sudo yum upgrade
 echo "Installing Jenkins / OpenJDK"
-sudo yum -y install jenkins java-11-openjdk-devel
+sudo yum -y install jenkins java-1.8.0-openjdk-devel
 echo "Reloading module files"
 sudo systemctl daemon-reload
 echo "Starting Jenkins"
