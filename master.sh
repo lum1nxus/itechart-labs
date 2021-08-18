@@ -14,6 +14,15 @@ echo "Installing Jenkins / OpenJDK"
 sudo yum -y install jenkins java-1.8.0-openjdk-devel
 echo "Reloading module files"
 sudo systemctl daemon-reload
+echo "Disabling the setup wizard from the Jenkins initialization"
+sudo sed -i 's/JENKINS_ARGS=""/JENKINS_ARGS="-Djenkins.install.runSetupWizard=false"/' /etc/sysconfig/jenkins
+echo "Copying groove scripts to init.groovy.d folder"
+JENKINS_HOME=/var/lib/jenkins
+sudo mkdir -p $JENKINS_HOME/init.groovy.d
+for file in /vagrant/scripts/*
+    do
+        sudo cp $file $JENKINS_HOME/init.groovy.d
+done
 echo "Starting Jenkins"
 sudo systemctl enable jenkins
 sudo systemctl start jenkins
@@ -66,5 +75,6 @@ curl -sL https://rpm.nodesource.com/setup_10.x | sudo bash -
 sudo yum -y install nodejs
 var1=$(npm -version)
 echo "npm version is $var1"
+
 
 
