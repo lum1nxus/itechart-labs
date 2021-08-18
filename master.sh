@@ -11,7 +11,7 @@ sudo rpm --import https://pkg.jenkins.io/redhat-stable/jenkins.io.key
 echo "Upgrading package list"
 sudo yum upgrade
 echo "Installing Jenkins / OpenJDK"
-sudo yum -y install jenkins java-11-openjdk-devel
+sudo yum -y install jenkins java-1.8.0-openjdk-devel
 echo "Reloading module files"
 sudo systemctl daemon-reload
 echo "Disabling the setup wizard from the Jenkins initialization"
@@ -31,20 +31,50 @@ sudo cat >> /etc/hosts <<EOF
 172.16.1.50     MasterServer
 172.16.1.51     SlaveServer
 EOF
+echo "Installing yum-utils"
 sudo yum -y install yum-utils
+echo "Adding docker repository"
 sudo yum-config-manager \
     --add-repo \
     https://download.docker.com/linux/centos/docker-ce.repo
 sudo yum -y install docker-ce docker-ce-cli containerd.io
+echo "Enabling and starting docker"
 sudo systemctl start docker
+sudo systemctl enable docker
 sudo systemctl status docker
+echo "Creating specified directories for artifactory"
 sudo mkdir /opt/jfrog
-JFROG_HOME=/opt/jfrog
-sudo mkdir -p $JFROG_HOME/artifactory/var/etc/
+export JFROG_HOME=/opt/jfrog
+sudo mkdir -p $JFROG_HOME/artifactory/var/etc/ 
+sudo mkdir -p /var/opt/jfrog/artifactory/
+echo "Creating yaml file"
 cd $JFROG_HOME/artifactory/var/etc/
 sudo touch ./system.yaml
-sudo chown -R 1000:100 $JFROG_HOME/artifactory/var
+sudo bash -c 'cat << EOF > /opt/jfrog/artifactory/var/etc/system.yaml
+shared:
+    node:
+        ip: 172.16.1.50
+EOF'
+echo "Changing owner to 1030(artifactory user id)"
+sudo chown -R 1030:1030 $JFROG_HOME/artifactory/var
+sudo chown -R 1030:1030 /var/opt/jfrog/artifactory/
+echo "Changing access permissions to 777"
 sudo chmod -R 777 $JFROG_HOME/artifactory/var
+echo "Creating admin user credits"
+sudo mkdir -p $JFROG_HOME/artifactory/var/etc/access
+sudo bash -c 'cat << EOF > /opt/jfrog/artifactory/var/etc/access/bootstrap.creds
+luminxus@*=08052212
+EOF'
+echo "Giving a file revelant permissions"
+sudo chmod 600 /opt/jfrog/artifactory/var/etc/access/bootstrap.creds
+sudo chown -R 1030:1030 $JFROG_HOME/artifactory/var/etc/access
+echo "Starting docker artifactory container"
+sudo docker run --name artifactory -v $JFROG_HOME/artifactory/var/:/var/opt/jfrog/artifactory -d -p 8081:8081 -p 8082:8082 releases-docker.jfrog.io/jfrog/artifactory-oss:latest
+echo  "Installing nodejs & npm"
+curl -sL https://rpm.nodesource.com/setup_10.x | sudo bash -
+sudo yum -y install nodejs
+var1=$(npm -version)
+echo "npm version is $var1"
 
 
 
