@@ -75,6 +75,16 @@ curl -sL https://rpm.nodesource.com/setup_10.x | sudo bash -
 sudo yum -y install nodejs
 var1=$(npm -version)
 echo "npm version is $var1"
-
+echo "Adding EPEL repository"
+sudo yum -y install epel-release
+echo "Installing nginx"
+sudo yum -y install nginx
+echo "Starting nginx"
+sudo systemctl start nginx
+sudo systemctl status nginx
+sudo systemctl enable nginx
+echo "Creating site folder"
+sudo mkdir -p /var/www/html/default
+sudo chown nginx:nginx /var/www/html/default
 
 

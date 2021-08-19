@@ -4,8 +4,8 @@ Vagrant.configure("2") do |config|
           :hostname => "MasterServer",
           :box => "centos/7",
           :ip => "172.16.1.50",
-		  :guestport => "8080",
-		  :hostport => "8888",
+		  :guestport => "80",
+		  :hostport => "80",
 		  :script => "master.sh"
         },
 		{
@@ -35,8 +35,8 @@ Vagrant.configure("2") do |config|
 			node.vm.provision :shell, path: machine[:script]
 
             node.vm.provider :virtualbox do |vb|
-                vb.customize ["modifyvm", :id, "--memory", 512]
-                vb.customize ["modifyvm", :id, "--cpus", 1]
+                vb.customize ["modifyvm", :id, "--memory", 1024]
+                vb.customize ["modifyvm", :id, "--cpus", 2]
             end
         end
     end
