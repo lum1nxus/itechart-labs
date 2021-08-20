@@ -32,11 +32,16 @@ Vagrant.configure("2") do |config|
             node.vm.hostname = machine[:hostname]
             node.vm.network :private_network, ip: machine[:ip]
             node.vm.network "forwarded_port", guest: machine[:guestport], host: machine[:hostport]
+            if machine[:hostname] == "MasterServer" then
+                node.vm.network "forwarded_port", guest: 8080, host: 8080
+            end
 			node.vm.provision :shell, path: machine[:script]
 
             node.vm.provider :virtualbox do |vb|
                 vb.customize ["modifyvm", :id, "--memory", 1024]
                 vb.customize ["modifyvm", :id, "--cpus", 2]
+                vb.customize ["modifyvm", :id, "--natdnsproxy1", "on"]
+                vb.customize ["modifyvm", :id, "--natdnsproxy1", "on"]
             end
         end
     end
