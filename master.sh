@@ -71,7 +71,7 @@ echo "Giving a file revelant permissions"
 sudo chmod 600 /opt/jfrog/artifactory/var/etc/access/bootstrap.creds
 sudo chown -R 1030:1030 $JFROG_HOME/artifactory/var/etc/access
 echo "Starting docker artifactory container"
-# sudo docker run --name artifactory -v $JFROG_HOME/artifactory/var/:/var/opt/jfrog/artifactory -d -p 8081:8081 -p 8082:8082 releases-docker.jfrog.io/jfrog/artifactory-oss:latest
+sudo docker run --name artifactory -v $JFROG_HOME/artifactory/var/:/var/opt/jfrog/artifactory -d -p 8081:8081 -p 8082:8082 releases-docker.jfrog.io/jfrog/artifactory-oss:latest
 echo  "Installing nodejs & npm"
 curl -sL https://rpm.nodesource.com/setup_10.x | sudo bash -
 sudo yum -y install nodejs
