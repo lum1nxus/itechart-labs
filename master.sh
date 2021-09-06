@@ -11,11 +11,12 @@ sudo rpm --import https://pkg.jenkins.io/redhat-stable/jenkins.io.key
 echo "Upgrading package list"
 sudo yum upgrade
 echo "Installing Jenkins / OpenJDK"
-sudo yum -y install jenkins java-1.8.0-openjdk-devel
+sudo yum -y install epel-release java-1.8.0-openjdk-devel
+sudo yum -y install jenkins 
 echo "Reloading module files"
 sudo systemctl daemon-reload
 echo "Disabling the setup wizard from the Jenkins initialization"
-sudo sed -i 's/JENKINS_ARGS=""/JENKINS_ARGS="-Djenkins.install.runSetupWizard=false"/' /etc/sysconfig/jenkins
+sudo sed -i 's/JENKINS_ARGS=""/JENKINS_ARGS="-Djenkins.install.runSetupWizard=false --httpListenAddress=127.0.0.1"/' /etc/sysconfig/jenkins
 echo "Copying groove scripts to init.groovy.d folder"
 JENKINS_HOME=/var/lib/jenkins
 sudo mkdir -p $JENKINS_HOME/init.groovy.d
@@ -30,6 +31,7 @@ sudo cat >> /etc/hosts <<EOF
 #jenkins servers - forced since no DNS
 172.16.1.50     MasterServer
 172.16.1.51     SlaveServer
+172.16.1.50     jenkins.itech.labs
 EOF
 echo "Installing yum-utils"
 sudo yum -y install yum-utils
@@ -77,6 +79,29 @@ curl -sL https://rpm.nodesource.com/setup_10.x | sudo bash -
 sudo yum -y install nodejs
 var1=$(npm -version)
 echo "npm version is $var1"
+echo "Adding EPEL repository"
+echo "Installing nginx & cert bot for ssl sertification"
+sudo yum -y install nginx 
+echo "Allowing nginx to connect to other services"
+sudo setsebool -P httpd_can_network_connect on
+echo "Starting nginx"
+## If firewall is running
+# sudo firewall-cmd --add-service=http
+# sudo firewall-cmd --add-service=https
+# sudo firewall-cmd --runtime-to-permanent
+# sudo iptables -I INPUT -p tcp -m tcp --dport 80 -j ACCEPT
+# sudo iptables -I INPUT -p tcp -m tcp --dport 443 -j ACCEPT
+sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/ssl/jenkins-selfsigned.key -out /etc/ssl/jenkins-selfsigned.crt -subj "/C=BY/ST=Minsk/L=Minsk/O=ITechArt/OU=ITDEP/CN=jenkins.itech.labs"
+sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/ssl/artifactory-selfsigned.key -out /etc/ssl/artifactory-selfsigned.crt -subj "/C=BY/ST=Minsk/L=Minsk/O=ITechArt/OU=ITDEP/CN=artifactory.itech.labs"
+sudo cp /vagrant/jenkins.conf /etc/nginx/conf.d
+sudo cp /vagrant/artifactory.conf /etc/nginx/conf.d
+sudo systemctl start nginx
+sudo systemctl status nginx
+sudo systemctl enable nginx
+
+
+
+
 
 
 

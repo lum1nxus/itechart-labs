@@ -4,8 +4,8 @@ Vagrant.configure("2") do |config|
           :hostname => "MasterServer",
           :box => "centos/7",
           :ip => "172.16.1.50",
-		  :guestport => "8080",
-		  :hostport => "8888",
+		  :guestport => "80",
+		  :hostport => "80",
 		  :script => "master.sh"
         },
 		{
@@ -32,11 +32,16 @@ Vagrant.configure("2") do |config|
             node.vm.hostname = machine[:hostname]
             node.vm.network :private_network, ip: machine[:ip]
             node.vm.network "forwarded_port", guest: machine[:guestport], host: machine[:hostport]
+            if machine[:hostname] == "MasterServer" then
+                node.vm.network "forwarded_port", guest: 8080, host: 8080
+            end
 			node.vm.provision :shell, path: machine[:script]
 
             node.vm.provider :virtualbox do |vb|
-                vb.customize ["modifyvm", :id, "--memory", 512]
-                vb.customize ["modifyvm", :id, "--cpus", 1]
+                vb.customize ["modifyvm", :id, "--memory", 4096]
+                vb.customize ["modifyvm", :id, "--cpus", 4]
+                vb.customize ["modifyvm", :id, "--natdnsproxy1", "on"]
+                vb.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
             end
         end
     end
