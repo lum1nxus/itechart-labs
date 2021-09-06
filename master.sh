@@ -69,7 +69,7 @@ echo "Giving a file revelant permissions"
 sudo chmod 600 /opt/jfrog/artifactory/var/etc/access/bootstrap.creds
 sudo chown -R 1030:1030 $JFROG_HOME/artifactory/var/etc/access
 echo "Inserting license key"
-sudo cp /vagrant/artifactory.lic $JFROG_HOME/artifactory/var/ect/artifactory
+sudo cp /vagrant/artifactory.lic $JFROG_HOME/artifactory/var/etc/artifactory
 echo "Starting docker artifactory container"
 sudo docker run --name artifactory -v $JFROG_HOME/artifactory/var/:/var/opt/jfrog/artifactory -d -p 8081:8081 -p 8082:8082 releases-docker.jfrog.io/jfrog/artifactory-pro:latest
 echo  "Installing nodejs & npm"
