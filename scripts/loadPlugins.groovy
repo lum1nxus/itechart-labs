@@ -4,7 +4,7 @@ import java.util.logging.Logger
 def logger = Logger.getLogger("")
 def installed = false
 def initialized = false
-def pluginParameter="publish-over-ssh swarm workflow-aggregator build-timeout credentials-binding github-organization-folder ssh-slaves subversion timestamper ws-cleanup"
+def pluginParameter="artifactory publish-over-ssh swarm workflow-aggregator build-timeout credentials-binding github-organization-folder ssh-slaves subversion timestamper ws-cleanup"
 def plugins = pluginParameter.split()
 logger.info("" + plugins)
 def instance = Jenkins.getInstance()
