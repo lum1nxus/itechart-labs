@@ -80,6 +80,7 @@ sudo yum -y install nodejs
 var1=$(npm -version)
 echo "npm version is $var1"
 sudo mkdir -p /home/vagrant/project
+cd /home/vagrant/project
 sudo git init
 sudo git remote add origin https://github.com/lum1nxus/project-examples.git
 sudo git config core.sparseCheckout true
@@ -90,15 +91,15 @@ sudo jfrog config add Artifactory-Server --artifactory-url http://172.16.1.50:80
 sudo bash -c 'cat << EOF > /home/vagrant/project/npm-local.json
 {"key":"npm-local","packageType":"npm","rclass":"local"}
 EOF'
-jfrog rt repo-create npm-local.json
+sudo jfrog rt repo-create npm-local.json
 sudo bash -c 'cat << EOF > /home/vagrant/project/npm-remote.json
-{"key":"npm-remote","packageType":"npm","rclass":"remote","url":"https://www.jfrog.com/confluence/display/JFROG/npm+Registry"}
+{"key":"npm-remote","packageType":"npm","rclass":"remote","url":"http://172.16.1.50:8081/artifactory/api/npm/npm-virtual"}
 EOF'
-jfrog rt repo-create npm-remote.json
+sudo jfrog rt repo-create npm-remote.json
 sudo bash -c 'cat << EOF > /home/vagrant/project/npm-virtual.json
 {"key":"npm-virtual","packageType":"npm","rclass":"virtual","repositories":"npm-local,npm-remote"}
 EOF'
-jfrog rt repo-create npm-virtual.json
+sudo jfrog rt repo-create npm-virtual.json
 sudo mkdir -p /home/vagrant/project/.jfrog/projects
 sudo bash -c 'cat << EOF > /home/vagrant/project/npm-example/.jfrog/projects/npm.yaml
 version: 1
@@ -110,9 +111,9 @@ deployer:
   repo: npm-virtual
   serverId: Artifactory-Server
 EOF'
-sudo npm config set registry http://172.16.1.50:8081/artifactory/api/npm/npm-local
+sudo npm config set registry http://172.16.1.50:8081/artifactory/api/npm/npm-virtual
 sudo yum -y install expect
-/usr/bin/expect <<EOD
+sudo /usr/bin/expect <<EOD
 spawn npm adduser
 expect {
   "Username:" {send "luminxus\r"; exp_continue}
