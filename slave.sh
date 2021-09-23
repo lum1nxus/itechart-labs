@@ -58,7 +58,7 @@ sudo cp /vagrant/artifactory/artifactory.lic $JFROG_HOME/artifactory/var/etc/art
 echo "Inserting artifactory xml config for anonymous access"
 sudo cp /vagrant/artifactory/artifactory.config.xml $JFROG_HOME/artifactory/var/etc/artifactory
 echo "Starting docker artifactory container"
-sudo docker run --name artifactory -v $JFROG_HOME/artifactory/var/:/var/opt/jfrog/artifactory -d -p 8081:8081 -p 8082:8082 releases-docker.jfrog.io/jfrog/artifactory-pro:latest
+sudo docker run -d --restart unless-stopped --name artifactory -v $JFROG_HOME/artifactory/var/:/var/opt/jfrog/artifactory -d -p 8081:8081 -p 8082:8082 releases-docker.jfrog.io/jfrog/artifactory-pro:latest
 echo  "Installing nodejs & npm"
 curl -sL https://rpm.nodesource.com/setup_10.x | sudo bash -
 sudo yum -y install nodejs
