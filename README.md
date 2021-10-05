@@ -1,17 +1,18 @@
 ## Installation guide
+Stages marked with ✓ can be skipped, cause they are automated.
 ### 1. Vagrant
 1. Go to cloned repository and start vagrant by typing vagrant up in Bash.
 ### 2. Jenkins
-1. Create a user with credentials from slave.sh
-2. Install Publish over SSH, Swarm, Github, Pipeline plugins.
+1. ✓ Create a user with credentials from slave.sh 
+2. ✓ Install Publish over SSH, Swarm, Github, Pipeline plugins.
 3. Fill out the Publish over SSH form in system configuration.
    * Add vagrant user private key from DeployServer.
    * Add DeployServer hostname.
    * Remote Directory is /
 >If it doesnt work, try `cat id_rsa.pub >> authorized_keys`
 
-4. Add git path in configure tools. Usually its /usr/bin/git.
-5. Open static port:50000 for inbound agents in configure tools.
+4. ✓ Add git path in configure tools. Usually its /usr/bin/git.
+5. ✓ Open static port:50000 for inbound agents in configure tools.
 6. Add jenkins user public key from MasterServer to Github.
 7. Add jenkins user private key from MasterServer to credentials, type username that used on Github.
 ### 3. Freestyle Job
