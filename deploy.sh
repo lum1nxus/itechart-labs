@@ -21,7 +21,7 @@ cd react-universal-blog
 echo "Installing packages"
 sudo npm install
 echo "Transfering universal configuration file"
-sudo cp /vagrant/universal.conf /etc/nginx/conf.d
+sudo cp /vagrant/'nginx confs'/universal.conf /etc/nginx/conf.d
 echo "Starting nginx"
 sudo systemctl start nginx
 sudo systemctl status nginx

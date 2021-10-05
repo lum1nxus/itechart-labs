@@ -1,4 +1,5 @@
 #!/bin/bash
+
 echo "Updating package lists"
 sudo yum update -y
 echo "Installing wget package"
@@ -47,12 +48,12 @@ echo "Starting nginx"
 # sudo iptables -I INPUT -p tcp -m tcp --dport 80 -j ACCEPT
 # sudo iptables -I INPUT -p tcp -m tcp --dport 443 -j ACCEPT
 echo "Creating self-signed sertificate for jenkins"
-sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/ssl/jenkins-selfsigned.key -out /etc/ssl/jenkins-selfsigned.crt -subj "/C=BY/ST=Minsk/L=Minsk/O=ITechArt/OU=ITDEP/CN=jenkins.itech.labs"
+sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/ssl/jenkins-selfsigned.key -out /etc/ssl/jenkins-selfsigned.crt -subj "/C=BY/ST=Minsk/L=Minsk/O=ITechArt/OU=ITDEP/CN=itechart.labs/jenkins"
 echo "Creating self-signed sertificate for artifactory"
-sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/ssl/artifactory-selfsigned.key -out /etc/ssl/artifactory-selfsigned.crt -subj "/C=BY/ST=Minsk/L=Minsk/O=ITechArt/OU=ITDEP/CN=artifactory.itech.labs"
+sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/ssl/artifactory-selfsigned.key -out /etc/ssl/artifactory-selfsigned.crt -subj "/C=BY/ST=Minsk/L=Minsk/O=ITechArt/OU=ITDEP/CN=itechart.labs/artifactory"
 echo "Transfering config files"
-sudo cp /vagrant/jenkins.conf /etc/nginx/conf.d
-sudo cp /vagrant/artifactory/artifactory.conf /etc/nginx/conf.d
+sudo cp /vagrant/'nginx confs'/jenkins.conf /etc/nginx/conf.d
+sudo cp /vagrant/'nginx confs'/artifactory.conf /etc/nginx/conf.d
 echo "Starting nginx"
 sudo systemctl start nginx
 sudo systemctl status nginx
