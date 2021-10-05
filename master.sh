@@ -52,8 +52,8 @@ sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/ssl/jenkin
 echo "Creating self-signed sertificate for artifactory"
 sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/ssl/artifactory-selfsigned.key -out /etc/ssl/artifactory-selfsigned.crt -subj "/C=BY/ST=Minsk/L=Minsk/O=ITechArt/OU=ITDEP/CN=itechart.labs/artifactory"
 echo "Transfering config files"
-sudo cp /vagrant/jenkins.conf /etc/nginx/conf.d
-sudo cp /vagrant/artifactory/artifactory.conf /etc/nginx/conf.d
+sudo cp /vagrant/'nginx confs'/jenkins.conf /etc/nginx/conf.d
+sudo cp /vagrant/'nginx confs'/artifactory.conf /etc/nginx/conf.d
 echo "Starting nginx"
 sudo systemctl start nginx
 sudo systemctl status nginx
